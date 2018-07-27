@@ -1,7 +1,6 @@
 var cacheName = 'workserservice'
 var contentToCache = [
-  '/startpwa/workerservice/',
-  '/startpwa/workerservice/index.html',
+  '/startpwa/workerservice/app.js',
   '/startpwa/workerservice/index.js',
   '/startpwa/workerservice/dati.png'
 ]
