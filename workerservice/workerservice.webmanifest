@@ -1,0 +1,12 @@
+{
+    "name": "workerservice Progressive Web App",
+    "short_name": "workerservice",
+    "description": "Progressive Web App that lists games submitted to the A-Frame category in the js13kGames 2017 competition.",
+    "icons": [
+
+    ],
+    "start_url": "index.html",
+    "display": "fullscreen",
+    "theme_color": "#B12A34",
+    "background_color": "#B12A34"
+}
