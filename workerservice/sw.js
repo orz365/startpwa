@@ -1,9 +1,9 @@
 var cacheName = 'workserservice'
 var contentToCache = [
-  '/vue-webpack-project/workerservice/',
-  '/vue-webpack-project/workerservice/index.html',
-  '/vue-webpack-project/workerservice/index.js',
-  '/vue-webpack-project/workerservice/dati.png'
+  '/startpwa/workerservice/',
+  '/startpwa/workerservice/index.html',
+  '/startpwa/workerservice/index.js',
+  '/startpwa/workerservice/dati.png'
 ]
 
 self.addEventListener('install', function (e) {
