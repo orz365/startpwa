@@ -5,5 +5,4 @@ if ('serviceWorker' in navigator) {
             registration.update();
         }, 2000);
     })
-
 }
