@@ -1,0 +1,171 @@
+@charset "utf-8";
+@import "lib/zero";
+* {
+  padding: 0;
+  margin: 0;
+}
+body{
+  font-family: "Microsoft Sans Serif";
+}
+#app{
+  overflow: hidden;
+  width:1600px;
+}
+.zoom-box{
+  width:375px;
+  overflow: hidden;
+  float: left;
+}
+#wechat_box {
+  transform: scale(.5);
+  transform-origin: top left;
+
+  position: relative;
+  width: 750px;
+  min-height: 1250px;
+  border: 1px solid #e0e0e0;
+  display: inline-block;
+
+
+
+  background:#ebebeb;
+  .content {
+    padding:0px 15px;
+    .time{
+      padding:20px 0px;
+      text-align: center;
+
+      .text{
+        display:inline-block;
+        background:#d4d4d4;
+        font-size:23px;
+        color:#ffffff;
+        padding:5px 10px;
+        border-radius: 5px;
+      }
+    }
+
+    .other-dialog{
+      clear: both;
+      .avatar{
+        float: left;
+        .image{
+          width:78px;
+          height:78px;
+          background:red;
+        }
+      }
+      .dialog{
+        float: left;
+        padding-left:20px;
+        margin-bottom:30px;
+        .textarea{
+          border:1px solid #e0e0e0;
+          font-size:30px;
+          background:#fff;
+          padding:19px 22px;
+          border-radius: 10px;
+          color:#343434;
+          max-width:495px;
+          box-sizing:border-box;
+          line-height:45px;
+        }
+      }
+    }
+
+    .my-dialog{
+      clear: both;
+      .avatar{
+        float: right;
+        .image{
+          width:78px;
+          height:78px;
+          background:transparent;
+        }
+      }
+      .dialog{
+        float: right;
+        padding-right:20px;
+        margin-bottom:30px;
+        .textarea{
+          border:1px solid #8dce63;
+          font-size:30px;
+          background:#a0e75a;
+          padding:19px 22px;
+          border-radius: 10px;
+          color:#343434;
+          max-width:495px;
+          box-sizing:border-box;
+          line-height:45px;
+        }
+      }
+    }
+  }
+
+  .chat-box{
+    position: absolute;
+    background:#f4f4f4;
+    bottom:0;
+    width:100%;
+    height:90px;
+    line-height:90px;
+
+    .voice{
+      display:inline-block;
+      padding:0px 15px;
+      .image{
+        width:60px;
+        height:60px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+    .input-box{
+      display:inline-block;
+      width:460px;
+
+      box-sizing: border-box;
+
+      line-height:90px;
+      .input{
+        color:#343434;
+        width:100%;
+        font-size:30px;
+        height:60px;
+        line-height:60px;
+        display:inline;
+        border:none;
+        vertical-align: middle;
+        border-bottom:1px solid #d9d9d9;
+        background:transparent;
+        outline:none;
+      }
+    }
+    .emoji{
+      padding:0px 15px;
+      display:inline-block;
+      .image{
+        width:60px;
+        height:60px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+    .plus{
+      padding:0px 15px;
+      display:inline-block;
+      .image{
+        width:60px;
+        height:60px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+
+#options{
+  display: inline-block;
+  float: left;
+}

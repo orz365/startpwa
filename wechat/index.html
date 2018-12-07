@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=375,initial-scale=1, maximum-scale=1, user-scalable=0">
+    <title>Title</title>
+
+    <script src="https://cdn.staticfile.org/vue/2.5.18-beta.0/vue.js"></script>
+
+
+    <link rel="stylesheet/less" type="text/css" href="index.less"/>
+    <script>
+        less = {};
+    </script>
+    <script src="lib/less.min.js"></script>
+    <!--<script>less.watch();</script>-->
+    <script src="lib/html2canvas.min.js"></script>
+    <!--<link rel="stylesheet" href="index.css">-->
+</head>
+<body>
+
+<div id="app">
+    <div class="zoom-box">
+        <div id="wechat_box" style="" v-bind:style="{height:chatHeight+'px'}">
+            <div class="header">
+            </div>
+
+            <div class="content">
+
+                <div class="time">
+                    <span class="text">12月2日 晚上20:53</span>
+                </div>
+
+                <div class="other-dialog">
+                    <div class="avatar">
+                        <img class="image" v-bind:src="other_avatar"/>
+                    </div>
+                    <div class="dialog">
+                        <div class="textarea">
+                            dsl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱sl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱
+                            sl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱
+                            sl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱
+                        </div>
+                    </div>
+                </div>
+
+                <div class="other-dialog">
+                    <div class="avatar">
+                        <img class="image" v-bind:src="other_avatar"/>
+                    </div>
+                    <div class="dialog">
+                        <div class="textarea">
+                            dsl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱sl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱
+                            sl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱
+                            sl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time">
+                    <span class="text">12月2日 晚上20:53</span>
+                </div>
+                <div class="my-dialog">
+
+                    <div class="avatar">
+                        <img class="image" v-bind:src="my_avatar"/>
+                    </div>
+                    <div class="dialog">
+                        <div class="textarea">
+                            dsl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱sl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="chat-box">
+                <div class="voice">
+                    <img class="image" src="img/voice.png"/>
+                </div>
+                <div class="input-box">
+                    <input class="input"/>
+                </div>
+                <div class="emoji">
+                    <img class="image" src="img/smile.png"/>
+                </div>
+                <div class="plus">
+                    <img class="image" src="img/plus.png"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="options">
+        <div>
+            <label>屏幕高度</label>
+            <input type="number" v-model="chatHeight">
+        </div>
+
+        <div>
+            <label>我的头像</label>
+            <input type="file"   v-on:change="uploadImage('my_avatar')">
+        </div>
+
+        <div>
+            <label>对方头像</label>
+            <input type="file"  v-on:change="uploadImage('other_avatar')">
+        </div>
+
+        <div>
+            <button onclick="exportImg()">导出图片</button>
+        </div>
+        <div id="target" style="width:300px;">
+
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            a: 1,
+            other_avatar:'img/0.jpeg',
+            my_avatar:'img/0.jpeg',
+            chatHeight:1250
+        },
+        methods: {
+            greet: function (event) {
+                //`this` 在方法里指向当前 Vue 实例
+                alert('Hello ' + this.name + '!')
+                // `event` 是原生 DOM 事件
+                if (event) {
+                    alert(event.target.tagName)
+                }
+            },
+            uploadImage: function (type) {
+                var e = e || window.event;
+                var _this = this;
+                var MyTest = e.target.files[0]
+                var reader = new FileReader();
+                reader.readAsDataURL(MyTest);
+                reader.onload = function (theFile) {
+                    var image = new Image();
+                    image.src = theFile.target.result;
+                    document.body.appendChild(image)
+                    _this[type] = theFile.target.result
+                };
+            }
+        },
+        created: function () {
+            console.log(this.$data.a);
+        }
+    })
+
+    function exportImg() {
+        html2canvas(document.getElementById('wechat_box')).then(function (canvas) {
+//            var r = canvas.toDataURL()
+//            var o = document.createElement("a")
+//            o.href= r;
+//            o.download = '11.png',
+//                o.target = "_blank";
+//            var f = new MouseEvent("click",{
+//                view: window,
+//                bubbles: !0,
+//                cancelable: !1
+//            });
+//            o.dispatchEvent(f)
+            document.body.appendChild(canvas)
+        });
+    }
+
+
+    function uploadImage(obj) {
+    }
+</script>
+</html>
