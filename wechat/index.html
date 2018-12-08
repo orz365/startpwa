@@ -7,69 +7,139 @@
 
     <script src="https://cdn.staticfile.org/vue/2.5.18-beta.0/vue.js"></script>
 
+    <link rel="stylesheet" href="lib/bootstrap.min.css">
 
-    <link rel="stylesheet/less" type="text/css" href="index.less"/>
+    <link rel="stylesheet/less" type="text/css" href="less/index.less"/>
     <script>
         less = {};
     </script>
     <script src="lib/less.min.js"></script>
-    <!--<script>less.watch();</script>-->
+    <script>less.watch();</script>
     <script src="lib/html2canvas.min.js"></script>
     <!--<link rel="stylesheet" href="index.css">-->
 </head>
 <body>
 
-<div id="app">
+<div id="app" class="zero-flex-horizontal">
     <div class="zoom-box">
-        <div id="wechat_box" style="" v-bind:style="{height:chatHeight+'px'}">
+        <div id="wechat_box" style="">
             <div class="header">
+                <img class="icon" src="img/back.png">
+                <div class="text">
+                    {{wechat.title}}
+                </div>
             </div>
 
-            <div class="content">
+            <div class="content" v-bind:style="{height:wechat.contentHeight+'px'}">
 
-                <div class="time">
-                    <span class="text">12月2日 晚上20:53</span>
-                </div>
-
-                <div class="other-dialog">
-                    <div class="avatar">
-                        <img class="image" v-bind:src="other_avatar"/>
+                <div v-for="item in wechat.list">
+                    <div class="time"
+                         v-bind:class="{'active':item == editInfo && wechat.isEdit}"
+                         v-on:click="editItem(item)"
+                         v-if="item.type == wechat.messageType.Time">
+                        <span class="text">{{item.text}}</span>
                     </div>
-                    <div class="dialog">
-                        <div class="textarea">
-                            dsl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱sl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱
-                            sl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱
-                            sl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱
+
+                    <div class="dialog"
+                         v-bind:class="{'other-dialog':!item.user.isMe,'my-dialog':item.user.isMe,'active':item == editInfo&& wechat.isEdit}"
+                         v-if="item.type != wechat.messageType.Time"
+                         v-on:click="editItem(item)"
+
+                    >
+                        <div class="avatar">
+                            <img class="image" v-bind:src="item.user.avatar"/>
                         </div>
-                    </div>
-                </div>
+                        <div class="content">
+                            <div class="nick" v-if="!item.user.isMe && wechat.isShowNick">
+                                {{item.user.nick}}
+                            </div>
 
-                <div class="other-dialog">
-                    <div class="avatar">
-                        <img class="image" v-bind:src="other_avatar"/>
-                    </div>
-                    <div class="dialog">
-                        <div class="textarea">
-                            dsl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱sl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱
-                            sl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱
-                            sl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱
+                            <div class="textarea" v-if="item.type == wechat.messageType.Text">
+                                <span v-bind:text-content.prop="item.text"></span>
+                            </div>
+
+                            <div class="red-packet" v-if="item.type == wechat.messageType.RedPacket">
+                                <div class="top">
+                                    <div class="icon">
+                                        <img class="image" src="img/redpacket_unread.png"/>
+                                    </div>
+                                    <div class="desc">
+                                        <div class="title">
+                                            {{item.text}}
+                                        </div>
+                                        <div class="status">
+                                            查看红包
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    微信红包
+                                </div>
+                            </div>
+
+                            <div class="red-packet" v-if="item.type == wechat.messageType.RedPacket2">
+                                <div class="top over">
+                                    <div class="icon">
+                                        <img class="image" src="img/redpacket_unread.png"/>
+                                    </div>
+                                    <div class="desc">
+                                        <div class="title">
+                                            {{item.text}}
+                                        </div>
+                                        <div class="status">
+                                            红包已被领完
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    微信红包
+                                </div>
+                            </div>
+
+                            <div class="red-packet" v-if="item.type == wechat.messageType.Transfer">
+                                <div class="top">
+                                    <div class="icon">
+                                        <img class="image"
+                                             src="img/transfer.png"/>
+                                    </div>
+                                    <div class="desc">
+                                        <div class="title">
+                                            {{item.text}}
+                                        </div>
+                                        <div class="status">
+                                            {{item.money}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    微信转账
+                                </div>
+                            </div>
+
+                            <div class="red-packet" v-if="item.type == wechat.messageType.Transfer2">
+                                <div class="top over">
+                                    <div class="icon">
+                                        <img class="image"
+                                             src="img/confirm.png"/>
+                                    </div>
+                                    <div class="desc">
+                                        <div class="title">
+                                            {{item.text}}
+                                        </div>
+                                        <div class="status">
+                                            {{item.money}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bottom">
+                                    微信转账
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="time">
-                    <span class="text">12月2日 晚上20:53</span>
-                </div>
-                <div class="my-dialog">
+                    </div>
 
-                    <div class="avatar">
-                        <img class="image" v-bind:src="my_avatar"/>
-                    </div>
-                    <div class="dialog">
-                        <div class="textarea">
-                            dsl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱sl木有办法进吉果园要㐱㐱爱你的你爱的人有㐱㐱㐱
-                        </div>
-                    </div>
+
                 </div>
 
 
@@ -89,71 +159,205 @@
                     <img class="image" src="img/plus.png"/>
                 </div>
             </div>
+            <div class="phone-bottom">
+
+            </div>
         </div>
     </div>
 
-    <div id="options">
-        <div>
-            <label>屏幕高度</label>
-            <input type="number" v-model="chatHeight">
-        </div>
 
-        <div>
-            <label>我的头像</label>
-            <input type="file"   v-on:change="uploadImage('my_avatar')">
-        </div>
+    <!-- 编辑对话信息 -->
+    <div class="card zero-flex-1" v-if="editInfo">
+        <div class="card-body edit-info">
+            <div>
+                <label>
+                    消息类型：
+                </label>
+                <label>
+                    <input type="radio" name="messageType" v-bind:value="wechat.messageType.Time"
+                           v-on:click="checkMessageType" v-bind:checked="editInfo.type == wechat.messageType.Time"
+                    >
+                    提示信息（时间、登录、退出等）
+                </label>
+                <label>
 
-        <div>
-            <label>对方头像</label>
-            <input type="file"  v-on:change="uploadImage('other_avatar')">
-        </div>
+                    <input type="radio" name="messageType" v-bind:value="wechat.messageType.Text"
+                           v-on:click="checkMessageType" v-bind:checked="editInfo.type == wechat.messageType.Text"
+                    >
+                    文本消息
+                </label>
+                <label>
 
-        <div>
-            <button onclick="exportImg()">导出图片</button>
-        </div>
-        <div id="target" style="width:300px;">
+                    <input type="radio" name="messageType" v-bind:value="wechat.messageType.Voice"
+                           v-on:click="checkMessageType" v-bind:checked="editInfo.type == wechat.messageType.Voice"
+                    >
+                    发送声音
+                </label>
+                <label>
 
+                    <input type="radio" name="messageType" v-bind:value="wechat.messageType.RedPacket"
+                           v-on:click="checkMessageType" v-bind:checked="editInfo.type == wechat.messageType.RedPacket"
+                    >
+                    红包
+                </label>
+                <label>
+
+                    <input type="radio" name="messageType" v-bind:value="wechat.messageType.Transfer"
+                           v-on:click="checkMessageType" v-bind:checked="editInfo.type == wechat.messageType.Transfer"
+                    >
+                    转账
+                </label>
+                <label>
+
+                    <input type="radio" name="messageType" v-bind:value="wechat.messageType.Transfer2"
+                           v-on:click="checkMessageType" v-bind:checked="editInfo.type == wechat.messageType.Transfer2"
+                    >
+                    确认转账
+                </label>
+            </div>
+
+            <div>
+                <label>
+                    使用用户
+                </label>
+                <div v-for="item in wechat.users">
+                    <label v-if="item.isMe">我的头像</label>
+                    <label v-if="!item.isMe">他人头像</label>
+                    <img :src="item.avatar" style="width:50px;height:50px;">
+                    <input type="file" v-on:change="uploadImage(item.id)">
+                    <label v-on:click="selectUser(item)">
+                        使用该头像
+                        <input type="radio" name="selectavatar">
+                    </label>
+                </div>
+            </div>
+
+
+            <div>
+                <label>
+                    是不是我？
+                </label>
+                <label v-on:click="editInfo.isMe = true">
+                    <input type="radio" name="selectIsMe" v-bind:checked="editInfo.isMe">
+                    是我
+                </label>
+                <label v-on:click="editInfo.isMe = false">
+                    <input type="radio" name="selectIsMe" v-bind:checked="!editInfo.isMe"> 不是我
+                </label>
+            </div>
+
+            <div class="">
+                <label>
+                    消息值：
+                </label>
+                <textarea class="" v-model="editInfo.text"></textarea>
+            </div>
+            <div>
+                <label>
+                    转账钱数：
+                </label>
+                <input type="text" v-model="editInfo.money"/>
+            </div>
+            <div>
+                <button type="button" class="btn btn-danger" v-on:click="deleteItem(editInfo)">删除</button>
+
+                <button type="button" class="btn btn-primary" v-on:click="addPrev(editInfo)">上面新增一条</button>
+                <button type="button" class="btn btn-primary" v-on:click="addNext(editInfo)">下面新增一条</button>
+            </div>
         </div>
     </div>
+
+    <!-- 编辑屏幕信息 -->
+    <div id="options" class="card">
+        <div class="card-body">
+            <form class="">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">聊天标题</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" v-model="wechat.title">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">屏幕高度</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" v-model="wechat.contentHeight">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">我的头像</label>
+                    <div class="col-sm-9">
+                        <input type="file" class="form-control" v-on:change="uploadImage(1)">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">对方头像</label>
+                    <div class="col-sm-9">
+                        <input type="file" class="form-control" v-on:change="uploadImage(0)">
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">显示昵称</label>
+                    <div class="col-sm-9">
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label" for="defaultCheck1">
+                                Default checkbox
+                            </label>
+                        </div>
+                        <input class="form-check-input" type="checkbox" v-model="wechat.isShowNick">
+                        <label class="form-check-label">
+
+                        </label>
+                    </div>
+                </div>
+
+                <div>
+                    <label>
+                        是否
+                        <input type="checkbox" v-model="wechat.isShowNick">
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        是否编辑
+                        <input type="checkbox" v-model="wechat.isEdit">
+                    </label>
+                </div>
+
+
+                <div>
+                    <label>
+                        用户信息
+                    </label>
+                    <div v-for="item in wechat.users">
+                        <label v-if="item.isMe">我的头像</label>
+                        <label v-if="!item.isMe">他人头像</label>
+                        <img :src="item.avatar" style="width:50px;height:50px;">
+                        <input type="file" v-on:change="uploadImage(item.id)">
+                        <br/>
+                        <input type="text" v-model="item.nick">
+                        <input type="radio" v-on:click="setMe(item)"
+                               name="setMe" v-bind:checked="item.isMe == true">
+                    </div>
+                </div>
+
+                <div>
+                    <button onclick="exportImg()">导出图片</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
 </div>
 </body>
+<script src="js/index.js"></script>
 <script>
-    var vm = new Vue({
-        el: '#app',
-        data: {
-            a: 1,
-            other_avatar:'img/0.jpeg',
-            my_avatar:'img/0.jpeg',
-            chatHeight:1250
-        },
-        methods: {
-            greet: function (event) {
-                //`this` 在方法里指向当前 Vue 实例
-                alert('Hello ' + this.name + '!')
-                // `event` 是原生 DOM 事件
-                if (event) {
-                    alert(event.target.tagName)
-                }
-            },
-            uploadImage: function (type) {
-                var e = e || window.event;
-                var _this = this;
-                var MyTest = e.target.files[0]
-                var reader = new FileReader();
-                reader.readAsDataURL(MyTest);
-                reader.onload = function (theFile) {
-                    var image = new Image();
-                    image.src = theFile.target.result;
-                    document.body.appendChild(image)
-                    _this[type] = theFile.target.result
-                };
-            }
-        },
-        created: function () {
-            console.log(this.$data.a);
-        }
-    })
-
     function exportImg() {
         html2canvas(document.getElementById('wechat_box')).then(function (canvas) {
 //            var r = canvas.toDataURL()
